@@ -101,13 +101,13 @@ public class server
         try
         {
             ServerSocket serverSocket = new ServerSocket(30000); // listen port 30000 of local machine
-            while(true) {
+            //while(true) {
                 Socket socket = serverSocket.accept();
                 System.out.println(socket.getInetAddress().getHostName() + " connects to server...");
                 Worker worker = new Worker(socket);
 
                 new Thread(worker).start();
-            }
+            //}
         }catch(Exception e) {
             System.out.println("An exception is thrown from main thread.");
             e.printStackTrace();

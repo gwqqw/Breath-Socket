@@ -88,7 +88,7 @@ public class client {
 
             TimeStore timeStore = new TimeStore();
 
-            new Thread(new SendHeartbeat(/*ois,*/oos,timeStore)).start();
+            //new Thread(new SendHeartbeat(/*ois,*/oos,timeStore)).start();
 
             new Thread(new ReceiveMsgFromServer(socket)).start();
 
@@ -96,6 +96,27 @@ public class client {
             String three = new String("3");
             String received = new String();
 
+            try {
+                oos.writeByte(3);
+                oos.flush();
+                File file = new File("d:\\20151129_160235.jpg");
+                FileInputStream fin = new FileInputStream(file);
+                byte[] sendByte = new byte[1024];
+                dos.writeUTF(file.getName());
+                int length = 0;
+                System.out.println("Start to send file...");
+                while ((length = fin.read(sendByte, 0, sendByte.length)) > 0) {
+                    dos.write(sendByte, 0, length);
+                    dos.flush();
+                }
+                fin.close();
+                System.out.println("Finish file sent.");
+            }catch (Exception e){
+                System.out.println("Exception happens when send file");
+                e.printStackTrace();
+            }finally {
+                dos.close();
+            }
             while ((line = bufferedReader.readLine() ) != null){
                 if (line.compareTo(three) == 0)
                 {
@@ -124,6 +145,7 @@ public class client {
             bufferedReader.close();
             oos.close();
             dos.close();
+
         }catch(IOException e){
             System.out.println("An exception thrown when write data");
         }finally {
